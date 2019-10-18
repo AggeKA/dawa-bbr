@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+<head>
+    <title>DAWA autocomplete - demo</title>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+    <link rel="stylesheet" href="/css/dawa-autocomplete2.css">
+    <script src="/js/dawa-autocomplete2.js"></script>
+    <style>
+        body {
+            font-family: "Helvetica Neue",Arial,sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+<h3>minLength=3</h3>
+<div class="dawa-autocomplete-container">
+    <input type="search" id="autocomplete-minlength-3">
+</div>
+<h3>BBR-nummer</h3>
+<div id=bbr></div>
+</body>
+<script>
+
+function getAddressFromDawaResponse(data){
+    var data = JSON.parse(data);
+    if(!data.adgangsadresse){
+      throw "no address found"
+    }
+    return data.adgangsadresse;
+  }
+
+  function appendBbrNumber(adresse){
+    if(!adresse.kommune ||  !adresse.kommune.kode){
+      throw "no kommunekode found"
+    }
+    if(!adresse.esrejendomsnr){
+      throw "no esrejendomsnr found"
+    }
+
+    var kommunekode = parseInt(adresse.kommune.kode, 10).toString();
+    var ejdnr = adresse.esrejendomsnr;
+    var paddingCount = Math.max(0, 10 - kommunekode.length);
+
+    var bbr = kommunekode + ejdnr.padStart(paddingCount, '0')
+    adresse.bbr = bbr;
+    console.log(kommunekode);
+    console.log(ejdnr);
+    console.log(paddingCount);
+    console.log(bbr);
+    return adresse;
+  }
+
+  let that = this;
+  //  const BASE_URL = 'http://localhost:3000';
+  const BASE_URL = 'https://dawa.aws.dk';
+
+  dawaAutocomplete.dawaAutocomplete(document.getElementById("autocomplete-minlength-3"), {
+    baseUrl:BASE_URL,
+    minLength: 3,
+    adgangsadresserOnly: false,
+    select: function(selected) {
+      console.log('AGGE: Selected address:');
+      console.dir(selected);
+      console.log(selected.data.href);
+
+      const Http = new XMLHttpRequest();
+      Http.open("GET", selected.data.href);
+      Http.send();
+
+      Http.onreadystatechange = (e) => {
+        console.log(Http.responseText)
+        var addresse = that.getAddressFromDawaResponse(Http.responseText);
+        addresse = that.appendBbrNumber(addresse);
+        console.log(addresse);
+       
+        document.getElementById("bbr").innerHTML = addresse.bbr;
+      }
+
+    }
+  });
+
+  
+
+</script>
+</html>
