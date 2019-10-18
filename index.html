@@ -46,10 +46,6 @@ function getAddressFromDawaResponse(data){
 
     var bbr = kommunekode + ejdnr.padStart(paddingCount, '0')
     adresse.bbr = bbr;
-    console.log(kommunekode);
-    console.log(ejdnr);
-    console.log(paddingCount);
-    console.log(bbr);
     return adresse;
   }
 
@@ -62,27 +58,17 @@ function getAddressFromDawaResponse(data){
     minLength: 3,
     adgangsadresserOnly: false,
     select: function(selected) {
-      console.log('AGGE: Selected address:');
-      console.dir(selected);
-      console.log(selected.data.href);
-
       const Http = new XMLHttpRequest();
       Http.open("GET", selected.data.href);
       Http.send();
 
       Http.onreadystatechange = (e) => {
-        console.log(Http.responseText)
         var addresse = that.getAddressFromDawaResponse(Http.responseText);
         addresse = that.appendBbrNumber(addresse);
-        console.log(addresse);
-       
         document.getElementById("bbr").innerHTML = addresse.bbr;
       }
-
     }
   });
-
-  
 
 </script>
 </html>
