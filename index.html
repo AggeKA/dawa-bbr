@@ -75,6 +75,7 @@ function getAddressFromDawaResponse(data){
 
         var tinglysningUrl = "https://www.tinglysning.dk/rest/soeg/" + encodeURI(addresse.text);
         console.log(tinglysningUrl);
+        document.getElementById("tinglysning").innerHTML = tinglysningUrl;
       }
     }
   });
