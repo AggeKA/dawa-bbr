@@ -78,7 +78,7 @@ function getAddressFromDawaResponse(data){
       Http.send();
 
       Http.onreadystatechange = (e) => {
-        console.log((Http.responseText);
+        console.log(Http.responseText);
         var addresse = that.getAddressFromDawaResponse(Http.responseText);
         var tinglysningUrl = that.getCourtUrlFromDawaResponse(Http.responseText);
         addresse = that.appendBbrNumber(addresse);
