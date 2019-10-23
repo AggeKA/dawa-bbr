@@ -60,7 +60,13 @@ function getAddressFromDawaResponse(data){
     if(!data.adressebetegnelse){
       throw "no formatted text found"
     }
-    return "https://www.tinglysning.dk/rest/soeg/" + encodeURI(data.adressebetegnelse);
+
+    var adr = data.adressebetegnelse;
+    if(data.supplerendebynavn){
+      adr = adr.replace(', '+ data.supplerendebynavn ,'');
+    }
+
+    return "https://www.tinglysning.dk/rest/soeg/" + encodeURI(adr);
   }
   
 
@@ -85,7 +91,16 @@ function getAddressFromDawaResponse(data){
         document.getElementById("bbr").innerHTML = addresse.bbr;
 
         console.log(tinglysningUrl);
-        document.getElementById("tinglysning").innerHTML = tinglysningUrl;
+        
+        const Http2 = new XMLHttpRequest();
+        Http2.open("GET", tinglysningUrl);
+        Http2.send();
+
+        Http2.onreadystatechange = (e) => {
+          document.getElementById("tinglysning").innerHTML = Http2.responseText;
+        }
+
+        
       }
     }
   });
