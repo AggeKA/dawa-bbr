@@ -57,10 +57,10 @@ function getAddressFromDawaResponse(data){
 
   function getCourtUrlFromDawaResponse(data){
     var data = JSON.parse(data);
-    if(!data.tekst){
+    if(!data.adressebetegnelse){
       throw "no formatted text found"
     }
-    return "https://www.tinglysning.dk/rest/soeg/" + encodeURI(data.tekst);
+    return "https://www.tinglysning.dk/rest/soeg/" + encodeURI(data.adressebetegnelse);
   }
   
 
