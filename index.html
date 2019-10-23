@@ -57,6 +57,7 @@ function getAddressFromDawaResponse(data){
 
   function getCourtUrlFromDawaResponse(data){
     var data = JSON.parse(data);
+    console.log(data);
     if(!data.adressebetegnelse){
       throw "no formatted text found"
     }
