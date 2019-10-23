@@ -20,7 +20,13 @@
     <input type="search" id="autocomplete-minlength-3">
 </div>
 <h3>BBR-nummer</h3>
-<div id=bbr></div>
+<div id="bbr"></div>
+<h3>Tinglysning</h3>
+<div id="tinglysning">
+</div>
+
+
+
 </body>
 <script>
 
@@ -39,7 +45,7 @@ function getAddressFromDawaResponse(data){
     if(!adresse.esrejendomsnr){
       throw "no esrejendomsnr found"
     }
-
+    
     var kommunekode = parseInt(adresse.kommune.kode, 10).toString();
     var ejdnr = adresse.esrejendomsnr;
     var paddingCount = Math.max(0, 10 - kommunekode.length);
@@ -66,6 +72,9 @@ function getAddressFromDawaResponse(data){
         var addresse = that.getAddressFromDawaResponse(Http.responseText);
         addresse = that.appendBbrNumber(addresse);
         document.getElementById("bbr").innerHTML = addresse.bbr;
+
+        var tinglysningUrl = "https://www.tinglysning.dk/rest/soeg/" + encodeURI(adresse.text);
+        console.log(tinglysningUrl);
       }
     }
   });
