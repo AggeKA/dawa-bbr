@@ -62,6 +62,7 @@ function getAddressFromDawaResponse(data){
     }
 
     var adr = data.adressebetegnelse;
+    console.log("SUPLBYBVN: " + data.supplerendebynavn);
     if(data.supplerendebynavn){
       adr = adr.replace(', '+ data.supplerendebynavn ,'');
     }
@@ -84,7 +85,6 @@ function getAddressFromDawaResponse(data){
       Http.send();
 
       Http.onreadystatechange = (e) => {
-        console.log(Http.responseText);
         var addresse = that.getAddressFromDawaResponse(Http.responseText);
         var tinglysningUrl = that.getCourtUrlFromDawaResponse(Http.responseText);
         addresse = that.appendBbrNumber(addresse);
