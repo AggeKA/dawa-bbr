@@ -55,6 +55,15 @@ function getAddressFromDawaResponse(data){
     return adresse;
   }
 
+  function getCourtUrlFromDawaResponse(data){
+    var data = JSON.parse(data);
+    if(!data.tekst){
+      throw "no formatted text found"
+    }
+    return "https://www.tinglysning.dk/rest/soeg/" + encodeURI(data.tekst);
+  }
+  
+
   let that = this;
   //  const BASE_URL = 'http://localhost:3000';
   const BASE_URL = 'https://dawa.aws.dk';
@@ -70,10 +79,10 @@ function getAddressFromDawaResponse(data){
 
       Http.onreadystatechange = (e) => {
         var addresse = that.getAddressFromDawaResponse(Http.responseText);
+        var tinglysningUrl = that.getCourtUrlFromDawaResponse(Http.responseText);
         addresse = that.appendBbrNumber(addresse);
         document.getElementById("bbr").innerHTML = addresse.bbr;
 
-        var tinglysningUrl = "https://www.tinglysning.dk/rest/soeg/" + encodeURI(addresse.text);
         console.log(tinglysningUrl);
         document.getElementById("tinglysning").innerHTML = tinglysningUrl;
       }
